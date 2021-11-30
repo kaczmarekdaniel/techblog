@@ -1,24 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext, useEffect } from "react";
+import "./App.css";
+import NavigationSection from "./components/navigationSection/NavigationSection";
+import MainPage from "./components/mainPage/MainPage";
+import styled from "styled-components";
+import BlogProvider from "providers/BlogProvider";
+import { BlogContext } from "providers/BlogProvider";
+import { BrowserRouter as Router } from "react-router-dom";
+
+const Wrapper = styled.div`
+  min-height: 100vh;
+  height: auto;
+  max-width: 100vw;
+  background-color: #d4d4d4;
+  justify-content: flex-start;
+`;
 
 function App() {
+  const { showLoginModal } = useContext(BlogContext);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <BlogProvider>
+        <Wrapper className="flex">
+          <NavigationSection />
+          <MainPage />
+
+          {useEffect(() => {
+            console.log(showLoginModal);
+          }, [showLoginModal])}
+        </Wrapper>
+      </BlogProvider>
+    </Router>
   );
 }
 
