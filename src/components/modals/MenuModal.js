@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useRef, useState, useLayoutEffect, useEffect } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { VscChromeClose } from "react-icons/vsc";
 import { BsArrowRight } from "react-icons/bs";
+import gsap from "gsap";
+import { Transition } from "react-transition-group";
 
 //Login modal is triggered in mainPage/ProfilePicture.js
 
 const Wrapper = styled.div`
-  width: 100%;
+  width: 100vw;
   height: 100%;
   position: absolute;
   top: 0;
@@ -17,12 +19,15 @@ const Wrapper = styled.div`
   background-color: #171717;
   justify-content: flex-start;
   align-items: flex-start;
+  @media screen and (min-width: 1024px) {
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const NavElement = styled.button`
-  width: 75%;
+  width: 90%;
   height: 60px;
-  margin: 0 10px 0 15px;
   padding: 0;
   background-color: transparent;
   text-align: left;
@@ -35,13 +40,24 @@ const NavElement = styled.button`
 
 const CloseButton = styled.button`
   position: absolute;
-  top: 25px;
+  top: 15px;
   left: 15px;
   font-size: 30px;
   background-color: transparent;
   color: white;
   border: none;
+  z-index: 4;
   padding: 0;
+`;
+
+const Buttoncls = styled.button`
+  width: 300px;
+  height: 50px;
+  background-color: red;
+  z-index: 8;
+  position: absolute;
+  bottom: 0;
+  right: 0;
 `;
 
 const MailButton = styled.button`
@@ -68,21 +84,53 @@ const ButtonContainer = styled.div`
   align-items: center;
   height: 50%;
   padding-bottom: 10%;
+  @media screen and (min-width: 1024px) {
+    height: 50%;
+    padding-top: 0%;
+    justify-content: flex-start;
+    width: 25%;
+  }
 `;
 
 const NavContainer = styled.div`
   width: 100%;
   height: 40%;
   padding-top: 30%;
+  @media screen and (min-width: 1024px) {
+    height: 50%;
+    padding-top: 10%;
+    justify-content: center;
+    align-items: center;
+
+    width: 35%;
+  }
 `;
 
-const MenuModal = ({ handleClosePopover }) => {
+const MenuModal = ({ showLoginModal, setShowLoginModal }) => {
+  const wrapperMenu = useRef();
+
+  useLayoutEffect(() => {
+    gsap.from(wrapperMenu.current, {
+      x: "-115%",
+      duration: 1,
+      ease: "power",
+    });
+    return () => {
+      animateExit();
+    };
+  }, []);
+
+  const animateExit = () => {
+    gsap.to(wrapperMenu.current, {
+      x: "-115%",
+      duration: 1,
+      ease: "power",
+    });
+  };
+
   return (
-    <Wrapper className="flex">
-      <CloseButton onClick={handleClosePopover}>
-        <VscChromeClose />
-      </CloseButton>
-      <NavContainer>
+    <Wrapper className="flex" id="articleModalWrapper" ref={wrapperMenu}>
+      <NavContainer className="flex">
         <NavElement>Articles</NavElement>
         <NavElement>Our Mission</NavElement>
         <NavElement>Team members</NavElement>

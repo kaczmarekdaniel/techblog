@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./App.css";
 import NavigationSection from "./components/navigationSection/NavigationSection";
 import MainPage from "./components/mainPage/MainPage";

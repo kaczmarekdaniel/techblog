@@ -11,6 +11,11 @@ const Wrapper = styled.div`
   width: 100vw;
   align-items: flex-start;
   z-index: 1;
+
+  @media screen and (min-width: 1024px) {
+    align-items: center;
+    width: 100%;
+  }
 `;
 
 const ChooseCategory = styled.div`
@@ -18,6 +23,8 @@ const ChooseCategory = styled.div`
   display: inline-flex;
   height: 70%;
   flex-direction: row;
+  z-index: 1;
+
 `;
 
 const ChooseCategoryItem = styled(NavLink).attrs({
@@ -62,7 +69,8 @@ const Category = () => {
       dragResistance: 0, // 0 - 1
       overshootTolerance: 0,
     });
-  });
+    
+  }, []);
   return (
     <Wrapper className="flex wrapper" id="wrapper">
       <ChooseCategory className="carousel" id="carousel">
@@ -82,9 +90,9 @@ const Category = () => {
           <TopBar />
           <CategoryName> hardware</CategoryName>
         </ChooseCategoryItem>
-        <ChooseCategoryItem to="/main/programming" exact className="flex">
+        <ChooseCategoryItem to="/main/cybersec" exact className="flex">
           <TopBar />
-          <CategoryName> Programming</CategoryName>
+          <CategoryName> Cybersecurity</CategoryName>
         </ChooseCategoryItem>
       </ChooseCategory>
     </Wrapper>

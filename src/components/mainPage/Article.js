@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { StructuredText } from "react-datocms";
-import ArticleModal from "components/modals/ArticleModal";
+import { Link } from "react-router-dom";
+import { HiArrowRight } from "react-icons/hi";
+import useModal from "components/modals/useModal";
 
 const Wrapper = styled.div`
   height: 80vh;
   width: 90%;
   margin: 20px 10px 20px 10px;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  @media screen and (min-width: 1024px) {
+    min-height: 50vh;
+    width: 30%;
+  }
 `;
 
 const Tags = styled.div`
@@ -29,43 +35,47 @@ const Tag = styled.div`
 
 const ArticleMainPhoto = styled.div`
   width: 100%;
-  height: 50%;
-  background-size: contain;
+  min-height: 40%;
+  background-color: white;
+  background-size: cover;
   background-repeat: no-repeat;
   background-image: url(${(props) => props.image});
 `;
 const ArticleTitle = styled.div`
-  height: 20%;
+  height: 15%;
   text-align: left;
   border-top: 1px solid black;
   margin-top: 20px;
 `;
 
 const ArticlePreview = styled.div`
-  height: auto;
+  min-height: 20%;
   justify-content: flex-start;
   text-align: left;
   text-align: justify;
   border-top: 1px solid black;
 `;
 
-const Article = ({ article }) => {
-  const [showArticleModal, setShowArticleModal] = useState(false);
+const SeeMoreButton = styled.button`
+  flex-direction: row;
+  justify-content: center;
+  width: 70%;
+  min-height: 40px;
+  color: black;
+  background: transparent;
+  border: 1px solid black;
+  font-size: 14px;
+  color: Black;
+  .arrow {
+    margin: 0 0 0 15px;
+  }
+`;
 
+const Article = ({ article }) => {
+  const { Modal, isOpen, handleCloseModal, handleOpenModal } = useModal();
   const ImageUrl = article.articleImage.url;
 
-  const handleShowPopover = () => {
-    setShowArticleModal((showPopover) => !showPopover);
-    document.body.setAttribute(
-      "style",
-      "position:fixed; height:100vh;width:100vw;"
-    );
-  };
-
-  const handleClosePopover = () => {
-    setShowArticleModal((showPopover) => !showPopover);
-    document.body.setAttribute("style", "");
-  };
+  const articleTitle = useRef();
 
   return (
     <Wrapper className="flex">
@@ -76,23 +86,12 @@ const Article = ({ article }) => {
       <ArticlePreview className="flex">
         <p>{article.articleSummary}</p>
       </ArticlePreview>
-      <button onClick={handleShowPopover}>see more</button>
-
-      <Tags className="flex">
-        <Tag>#development</Tag>
-        <Tag>#frontend</Tag>
-        <Tag inputColor="blue"> #react</Tag>
-      </Tags>
-
-      {showArticleModal ? (
-        <ArticleModal
-          handleClosePopover={handleClosePopover}
-          article={article}
-          key={article.id}
-        />
-      ) : (
-        <></>
-      )}
+      <SeeMoreButton className="flex" onClick={handleOpenModal}>
+        See More <HiArrowRight className="arrow" />
+      </SeeMoreButton>
+      {isOpen ? (
+        <Modal handleClose={handleCloseModal} article={article} />
+      ) : null}
     </Wrapper>
   );
 };

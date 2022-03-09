@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useRef, useEffect, useLayoutEffect } from "react";
 import styled from "styled-components";
 import { FaGoogle, FaApple, FaGithub } from "react-icons/fa";
-import { HiArrowLeft } from "react-icons/hi";
-
+import { HiArrowRight } from "react-icons/hi";
+import gsap from "gsap";
 //Login modal is triggered in mainPage/ProfilePicture.js
 
 const Wrapper = styled.div`
@@ -12,9 +12,17 @@ const Wrapper = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  z-index: 2;
+  z-index: 3;
   background-color: #171717;
   color: white;
+`;
+
+const ArrowPart = styled.div`
+  min-width: 30px;
+  width: 75%;
+  height: 4px;
+  margin: 2px;
+  background-color: black;
 `;
 
 const CloseButton = styled.button`
@@ -65,10 +73,57 @@ const LoginButton = styled.button`
 const OtherLoggingOptions = styled.div``;
 
 const LoginModal = ({ handleClosePopover }) => {
+  const loginModal = useRef();
+  const arrowFirst = useRef();
+  const arrowSecond = useRef();
+  const arrowThird = useRef();
+
+  useLayoutEffect(() => {
+    gsap.from(loginModal.current, {
+      x: "115%",
+      duration: 1,
+      ease: "power",
+    });
+    gsap.to(arrowFirst.current, {
+      margin: 0,
+      duration: 1,
+      rotate: 45,
+      y: 11,
+      backgroundColor: "white",
+    });
+    gsap.to(arrowSecond.current, {
+      visibility: "hidden",
+    });
+    gsap.to(arrowThird.current, {
+      margin: 0,
+      duration: 1,
+      rotate: -45,
+      backgroundColor: "white",
+    });
+  }, []);
+
+  const animateClosePopover = () => {
+    gsap.to(loginModal.current, {
+      x: "105%",
+      duration: 1.5,
+      ease: "power",
+    });
+    gsap.to([arrowFirst.current, arrowSecond.current, arrowThird.current], {
+      rotation: 0,
+      x: 0,
+      y: 0,
+      margin: "2px",
+      backgroundColor: "white",
+    });
+    setTimeout(() => handleClosePopover(), 1000);
+  };
+
   return (
-    <Wrapper className="flex">
-      <CloseButton onClick={handleClosePopover}>
-        <HiArrowLeft />
+    <Wrapper className="flex" ref={loginModal}>
+      <CloseButton onClick={animateClosePopover}>
+        <ArrowPart ref={arrowFirst} />
+        <ArrowPart ref={arrowSecond} />
+        <ArrowPart ref={arrowThird} />
       </CloseButton>
       <Title> Login </Title>
       <InputContainer className="flex">

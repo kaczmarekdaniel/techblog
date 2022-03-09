@@ -5,6 +5,11 @@ export const Wrapper = styled.div`
   min-height: 75vh;
   width: 100%;
   justify-content: flex-start;
+  @media screen and (min-width: 1024px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 `;
 
 export const Skeleton = styled.div`

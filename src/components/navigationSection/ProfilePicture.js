@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import LoginModal from "components/modals/LoginModal";
 
 const Wrapper = styled.button`
+  position: absolute;
+  top: 15px;
+  right: 15px;
   width: 50px;
   height: 50px;
   border-radius: 25px;
@@ -21,7 +24,7 @@ const ProfilePicture = (props) => {
     setShowPopover((showPopover) => !showPopover);
     document.body.setAttribute(
       "style",
-      "position:fixed; height:100vh;width:100vw;"
+      "position:absolute; height:100vh;width:100vw;"
     );
   };
 

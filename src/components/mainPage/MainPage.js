@@ -7,10 +7,16 @@ import {
 } from "react-router-dom";
 import styled from "styled-components";
 
-import Category from "./Category";
-import LatestSection from "./LatestSection";
-import TrendingSection from "./TrendingSection";
-import ProgrammingSection from "./ProgrammingSection";
+import Category from "../navigationSection/Category";
+
+import ArticleSection from "./ArticleSection";
+import {
+  latestSectionQuery,
+  hardwareSectionQuery,
+  cybersecSectionQuery,
+  programmingSectionQuery,
+  trendingSectionQuery,
+} from "graphQL/queries";
 
 const Wrapper = styled.div`
   height: 85vh;
@@ -27,13 +33,19 @@ const MainPage = (props) => {
       <Wrapper className="flex">
         <Switch>
           <Route path="/main/trending">
-            <TrendingSection />
+            <ArticleSection querySelector={trendingSectionQuery} key={1} />
           </Route>
           <Route path="/main/programming">
-            <ProgrammingSection />
+            <ArticleSection querySelector={programmingSectionQuery} key={2} />
           </Route>
           <Route path="/main/latest" exact>
-            <LatestSection />
+            <ArticleSection querySelector={latestSectionQuery} key={3} />
+          </Route>
+          <Route path="/main/hardware" exact>
+            <ArticleSection querySelector={hardwareSectionQuery} key={4} />
+          </Route>
+          <Route path="/main/cybersec" exact>
+            <ArticleSection querySelector={cybersecSectionQuery} key={5} />
           </Route>
           <Redirect to="/main/latest" />
         </Switch>
